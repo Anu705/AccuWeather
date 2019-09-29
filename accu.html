@@ -1,0 +1,72 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <title>SpotiFy</title>
+    <style>
+                    body {margin:2rem auto;}
+                    center{margin:1rem auto;
+                    letter-spacing: 0.3rem;
+                    font-style: italic;
+                    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+                    font-weight:700;}
+                   .kira{
+                        color:crimson;
+                        font-style: italic;
+                        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                        letter-spacing: 0.1rem;}
+</style>
+</head>
+<body>
+            <div class="container">
+                <center>TRICHY FORECASTS</center>
+            </div>
+
+    <script    src="https://code.jquery.com/jquery-3.4.1.min.js"
+                integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+                crossorigin="anonymous">
+    </script>
+    
+    
+    
+        <script type="text/javascript">
+    
+        
+                        const baseurl = 'http://dataservice.accuweather.com';
+                        const apikey  = 'KMsNjyth1EqHs7s0xgf7dZ4fEyj0HQdh';
+
+                                        $.getJSON(`${baseurl}/locations/v1/search`, {
+                                            'apikey': apikey,
+                                            'q': 'Tiruchirappalli'
+                                        }).then(function (locData) {
+                                            console.log(locData)
+                                            return $.getJSON(`${baseurl}/forecasts/v1/daily/5day/${locData[0].Key}`, {
+                                                'apikey': apikey
+                                            });
+                                        }).then(function (tempData) {
+                                            console.log(tempData)
+
+                                            for (let i = 0; i < 3; i++) {
+                                                const element = tempData.DailyForecasts[i].Temperature;
+                                                let min=((element.Minimum.Value - 32)*5/9).toFixed(2) ;
+                                                let max=((element.Maximum.Value - 32)*5/9).toFixed(2) ;
+
+                                                 document.getElementsByClassName('container')[0].innerHTML+='<div class="card card-body mb-2"><h4> Day <span class="kira">'+i+'</span></h4><p>MaxTemp: <span class="kira"> '+max+'C Or '+ element.Maximum.Value + element.Maximum.Unit+'</span> </p><p>MinTemp: <span class="kira"> '+min+'C Or '+ element.Minimum.Value + element.Minimum.Unit+' </span></p><p>Date: <span class="kira">'+tempData.DailyForecasts[i].Date+'</span></p></div>'                                              
+                                            }
+                                        });
+
+
+
+
+
+        </script>
+        
+
+
+</body>
+
+</html>
